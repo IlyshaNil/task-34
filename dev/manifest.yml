@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name : nginx
-          image: ilyshanil/nginx-14:latest
+          image: ilyshanil/task-14-nginx:latest
           ports:
             - containerPort: 8080
           livenessProbe:
