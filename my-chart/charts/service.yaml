@@ -1,0 +1,91 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: task-28-service
+  labels:
+     type  : task-28-service
+spec:
+  type: NodePort
+  selector:
+    task: nginx-apache
+  ports:
+    - name      : ngixn-listener
+      protocol  : TCP
+      port      : 8080
+      nodePort  : 31080
+      targetPort: 8080
+
+    - name      : apache-listener
+      protocol  : TCP
+      port      : 80
+      nodePort  : 31880
+      targetPort: 80
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    upstream redblue {
+      server 127.0.0.1:81;
+      server 127.0.0.1:82;
+    }
+    server {
+      root /usr/share/nginx/html/static/;
+      listen 81;
+      location /redblue {
+        try_files /blue.html $uri/ =401;
+      }
+    }
+    server {
+      root /usr/share/nginx/html/static/;
+      listen 82;
+      location /redblue {
+        try_files /red.html $uri/ =402;
+      }
+    }
+    server {
+      listen 8080;
+      root /usr/share/nginx/html/static/;
+      index index.html;
+      location / {
+        try_files $uri $uri/ =403;
+      }
+      location /cpu {
+        alias /home/ubuntu/task6/;
+        add_header Content-Type text/plain;
+        add_header Refresh 5;
+        try_files /cpu.usage cpu.usage/ =405;
+      }
+      location /505 {
+        try_files $uri $uri/ =505;
+      }
+      location /music.mp3 {
+        add_header Content-type application/octet-stream;
+        add_header Content-Disposition attachment;
+        try_files /misuc.mp3 /$uri =403;
+      }
+      location /yamlcontent.yaml {
+        add_header Content-type text/plain;
+        try_files /yamlcontent.yaml /$uri =402;
+      }
+      location /apache {
+        proxy_pass http://172.31.10.58:31880/index.php; 
+      }
+      location /exit {
+        return 301 http://google.com;
+      }
+      location /image1 {
+        try_files /png.png $uri/ =400;
+      }
+      location /image2 {
+        image_filter rotate 180;
+        try_files /jpg.jpg static/ =400;
+      }
+      location /redblue {
+        proxy_pass http://redblue;
+      }
+    }

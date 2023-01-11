@@ -1,0 +1,73 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: task-28-deployment
+  labels:
+    app : task-28-deployment
+spec:
+  selector:
+    matchLabels:
+      task: nginx-apache
+  template:
+    metadata:
+      labels:
+        task: nginx-apache
+    spec:
+      containers:
+        - name : nginx
+          image: ilyshanil/task-14-nginx:latest
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+            failureThreshold: 5
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 5
+
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 10
+            failureThreshold: 30
+            periodSeconds: 10
+
+          volumeMounts:
+          - name: config-volume
+            mountPath: /etc/nginx/conf.d/
+      volumes:
+        - name: config-volume
+          configMap:
+            name: nginx-config
+     
+---
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: apache-deployment
+  labels:
+    app : apache-deployment
+spec:
+  selector:
+    matchLabels:
+      task: nginx-apache
+  template:
+    metadata:
+      labels:
+        task: nginx-apache
+    spec:
+      containers:
+        - name : apache
+          image: ilyshanil/apache-14:latest
+          ports:
+            - containerPort: 80
