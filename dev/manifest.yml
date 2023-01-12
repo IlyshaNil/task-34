@@ -5,6 +5,7 @@ metadata:
   labels:
     app : task-28-deployment
 spec:
+  replicas: 2
   selector:
     matchLabels:
       task: nginx-apache
