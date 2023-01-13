@@ -149,7 +149,7 @@ data:
         try_files /yamlcontent.yaml /$uri =402;
       }
       location /apache {
-        proxy_pass http://44.197.208.230:31880/index.php; 
+        redirect http://44.197.208.230:31880/index.php; 
       }
       location /exit {
         return 301 http://google.com;
