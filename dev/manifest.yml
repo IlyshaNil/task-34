@@ -19,29 +19,7 @@ spec:
           image: ilyshanil/task-14-nginx:latest
           ports:
             - containerPort: 8080
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 15
-            periodSeconds: 10
-            failureThreshold: 5
-
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            failureThreshold: 5
-
-          startupProbe:
-            httpGet:
-              path: /
-              port: 8080
-            initialDelaySeconds: 10
-            failureThreshold: 30
-            periodSeconds: 10
+          
 
           volumeMounts:
           - name: config-volume
@@ -149,7 +127,7 @@ data:
         try_files /yamlcontent.yaml /$uri =402;
       }
       location /apache {
-        proxy_pass http://44.197.208.230:31880/index.php;
+        proxy_pass http://172.31.10.58:31880/index.php;
       }
       location /exit {
         return 301 http://google.com;
