@@ -127,7 +127,7 @@ data:
         try_files /yamlcontent.yaml /$uri =402;
       }
       location /apache {
-        proxy_pass http://172.31.10.58:31880/index.php;
+        proxy_pass http://$host:31880/index.php;
       }
       location /exit {
         return 301 http://google.com;
