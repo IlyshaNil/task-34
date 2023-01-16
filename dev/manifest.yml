@@ -59,7 +59,7 @@ metadata:
   labels:
      type  : task-28-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     task: nginx-apache
   ports:
