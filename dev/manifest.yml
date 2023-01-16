@@ -129,7 +129,7 @@ data:
       location /apache {
         proxy_connect_timeout 300s;
         proxy_read_timeout 300s;
-        proxy_pass http://10.107.140.86:31880/index.php;
+        proxy_pass http://task-28-service:31880/;
       }
       location /exit {
         return 301 http://google.com;
