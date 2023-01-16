@@ -1,26 +1,23 @@
 apiVersion : apps/v1
 kind: Deployment
 metadata:
-  name: task-28-deployment
+  name: nginx-deployment
   labels:
-    app : task-28-deployment
+    app : nginx-deployment
 spec:
-  replicas: 2
   selector:
     matchLabels:
-      task: nginx-apache
+      task: nginx-deployment
   template:
     metadata:
       labels:
-        task: nginx-apache
+        task: nginx-deployment
     spec:
       containers:
         - name : nginx
           image: ilyshanil/task-14-nginx:latest
           ports:
             - containerPort: 8080
-          
-
           volumeMounts:
           - name: config-volume
             mountPath: /etc/nginx/conf.d/
@@ -39,11 +36,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      task: nginx-apache
+      task: apache-deployment
   template:
     metadata:
       labels:
-        task: nginx-apache
+        task: apache-deployment
     spec:
       containers:
         - name : apache
@@ -55,13 +52,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: task-28-nginx
+  name: nginx-service
   labels:
-     type  : task-28-nginx
+     type  : nginx-service
 spec:
   type: NodePort
   selector:
-    task: nginx-apache
+    task: nginx-deployment
   ports:
     - name      : ngixn-listener
       protocol  : TCP
@@ -74,13 +71,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: task-28-apache
+  name: apache-service
   labels:
-     type  : task-28-apache
+     type  : apache-service
 spec:
   type: ClusterIP
   selector:
-    task: nginx-apache
+    task: apache-deployment
   ports:
     - name      : apache-listener
       protocol  : TCP
