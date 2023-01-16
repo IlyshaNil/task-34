@@ -80,7 +80,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    type: apache-deployment
+    task: nginx-apache
   ports:
     - name      : apache-listener
       protocol  : TCP
